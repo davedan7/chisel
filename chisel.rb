@@ -15,6 +15,11 @@ class Chisel
 			emphasis(sentence)
 		end
 
+		# 
+		# @output = @output.map do |sentence|
+		# 	strong(sentence)
+		# end
+
 		puts @output.join("\n")
 	end
 
@@ -34,6 +39,7 @@ class Chisel
 				sentence.prepend("<p>").insert(-1, "</p>")
 			end
 		end
+		@output.join
 
 	end
 
@@ -54,6 +60,12 @@ class Chisel
     starred.join
   end
 
+	def strong(text)
+		strongged = text.map do |i|
+				i.sub!("<em></em>", "<strong>")
+		end
+		strongged
+	end
 
 end
 
