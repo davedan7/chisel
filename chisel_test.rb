@@ -48,6 +48,19 @@ class ChiselTest < Minitest::Test
 		assert_equal "<H2>Heading two</H2>", h2 
 	end
 
+	def test_input_separates_headers_and_paragraphs
+		chisel = Chisel.new
+		separate = chisel.split_into_chunks("#Header\n\nParagraph")
+		assert_equal ["#Header", "Paragraph"], separate
+	end
+
+	def test_it_splits_headers_and_paragraphs_and_gives_tags
+		skip
+		chisel = Chisel.new
+		tag_test = chisel.tags("#Header\n\nParagraph")
+		assert_equal ["<H1>Header</H1>", "<p>Paragraph</p>"], tag_test
+	end
+
 	def test_one_star_within_lines_are_converted_to_EM_tags
 		skip
 	end
