@@ -4,36 +4,55 @@ class Chisel
 
 	def initialize
 		@input
-		@output
-		@sentences
+		@output = ""
 	end
 
 	def parse(input)
-		@input	= input 
-		lines  = input.split("\n\n")
-		lines_mapped = lines.map do |line|
-			line << "THIS IS A NEW LINE"
+		@input	= input
+	end
+
+	def chunk_sorter
+
+	end
+	
+	def split_into_chunks(string)
+		 string.split("\n\n")
+	end
+
+	def paragraphs(text)
+		text.insert(0, "<p>") 
+		text << "</p>"
+	end
+
+	def hashes(text)
+		if text[0..3] == "####" && text[5] != "#"
+			text.gsub("####", "<H4>").insert(-1, "</H4>")
+		elsif text[0..2] =="###" && text[3] != "#"
+			text.gsub("###", "<H3>").insert(-1, "</H3>")
+		elsif text[0..1]=="##" && text[2] != "#"
+			text.gsub("##", "<H2>").insert(-1, "</H2>")
+		elsif text[0] == "#" && text[1] != "#"
+			text.gsub("#", "<H1>").insert(-1, "</H1>")
 		end
 	end
 
-	def split_lines
-		
-	end
 
-	def sentences(input)
-		input.split("\n\n")
-	end
-	
+# 	def hashes(text)
+# 		if text[0..3] == "####" && text[5] != "#"
+# 			text << "</H4>"
+# 			@output << text.gsub("####", "<H4>")
+# 		elsif text[0..2] =="###" && text[3] != "#"
+# 			text << "</H3>"
+# 			@output << text.gsub("###", "<H3>")
+# 		elsif text[0..1]=="##" && text[2] != "#"
+# 			text << "</H2>"
+# 			@output << text.gsub("##", "<H2>")	
+# 		elsif text[0] == "#" && text[1] != "#"
+# 			text << "</H1>"
+# 			@output << text.gsub("#", "<H1>")
+# 		end
+# 	end
+
 end
 
-test_input_together = "This is the first line of the paragraph.\n	This is the second line of the same paragraph"
 
-test_input_separate = "This is the first line of the first paragraph.\n
-\nThis is the first line of the second paragraph."
-
-test = Chisel.new
-puts test.parse(test_input_together.chomp)
-puts test.parse(test_input_separate)
-# parser = Chisel.new
-# output = parser.parse(document)
-# puts output
