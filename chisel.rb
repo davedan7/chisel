@@ -1,6 +1,6 @@
 class Chisel
 
-	attr_reader :output, :input #:chunk, :chunk_sorted
+	attr_reader :output, :input
 
 
 	def initialize
@@ -10,6 +10,15 @@ class Chisel
 
 	def parse(string)
 		@output = string.split("\n\n")
+		sorter
+		@output = @output.map do |sentence|
+			emphasis(sentence)
+		end
+
+		puts @output.join("\n")
+	end
+
+	def sorter
 		@output = @output.map do |sentence|
 			if sentence[0] == "#"
 				if sentence[0..3] == "####" && sentence[5] != "#"
@@ -25,9 +34,30 @@ class Chisel
 				sentence.prepend("<p>").insert(-1, "</p>")
 			end
 		end
+
 	end
 
+	def emphasis(text)
+    tagged = false
+
+    starred = text.chars.map do |i|
+      if tagged == false && i == '*'
+        tagged = true
+        i.sub(i, "<em>")
+      elsif tagged == true && i == '*'
+        tagged = false
+        i.sub(i, "</em>")
+      else
+        i
+      end
+    end
+    starred.join
+  end
+
+
 end
+
+
 
 document = '# My Life in Desserts
 
@@ -38,7 +68,7 @@ document = '# My Life in Desserts
 
 test = Chisel.new
 test.parse(document)
-puts test.output
+
 
 
 
